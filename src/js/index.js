@@ -1,13 +1,11 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { elements, elementStrings, renderLoader, clearLoader } from './views/base';
 
 // Global state
-const state = {
-    search: '', // search model instance
-    recipe: '' // recipe model instance
-}
+const state = {};
 
 const controlSearch = async () => {
     const query = searchView.getInput();
@@ -35,6 +33,12 @@ const controlRecipe = async () => {
     const id = window.location.hash.replace('#', '');
 
     if (id) {
+        recipeView.clearRecipe();
+
+        renderLoader(elements.recipe);
+
+        if (state.search) searchView.highlightSelected(id);
+
         state.recipe = new Recipe(id);
 
         try {
@@ -44,9 +48,11 @@ const controlRecipe = async () => {
             state.recipe.calcTime();
             state.recipe.calcServings();
 
-            console.log(state.recipe);
+            clearLoader();
+            recipeView.renderRecipe(state.recipe);
         } catch (error) {
             alert('Error processing recipe.');
+            clearLoader();
         }
     }
 };
