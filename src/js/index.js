@@ -10,7 +10,7 @@ import { elements, elementStrings, renderLoader, clearLoader } from './views/bas
 
 // Global state
 const state = {};
-//window.state = state; //for testing
+
 const controlSearch = async () => {
     const query = searchView.getInput();
 
@@ -148,5 +148,3 @@ elements.shopping.addEventListener('click', e => {
         state.list.updateCount(id, val);
     }
 });
-
-window.l = new List();
