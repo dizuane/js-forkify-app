@@ -71,9 +71,6 @@ const controlList = () => {
     });
 };
 
-state.likes = new Likes()
-likesView.toggleLikesMenu(state.likes.getNumLikes());
-
 const controlLike = () => {
     if (!state.likes) state.likes = new Likes();
 
@@ -88,16 +85,22 @@ const controlLike = () => {
 
         likesView.toggleLikeButton(true);
         likesView.renderLike(newLike);
-        console.log(state.likes);
     } else {
         state.likes.deleteLike(currentID);
         likesView.toggleLikeButton(false);
         likesView.deleteLike(currentID);
-        console.log(state.likes);
     }
 
     likesView.toggleLikesMenu(state.likes.getNumLikes());
 };
+
+window.addEventListener('load', () => {
+    state.likes = new Likes();
+    state.likes.readStorage();
+    likesView.toggleLikesMenu(state.likes.getNumLikes());
+
+    state.likes.likes.forEach(like => likesView.renderLike(like));
+});
 
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
